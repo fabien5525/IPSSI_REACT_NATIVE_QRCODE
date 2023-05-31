@@ -7,8 +7,36 @@ export default function Cam() {
   const [scanned, setScanned] = useState(false);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true); alert(data)
-  }
+    setScanned(true);
+
+    if (!data.startsWith("https://randomuser.me/api")) {
+      alert("invalid QR code")
+      return;
+    }
+
+    fetch(data)
+      .then((response) => response.json())
+      .then((json) => {
+        fetch("http://5525.fr:19001/user", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(json.results[0])
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            alert("user added");
+            // TODO : navigate to user with : json.id
+          })
+          .catch((error) => {
+            console.error("api error : ", error);
+          });
+      })
+      .catch((error) => {
+        console.error("qrcode data error : ", error);
+      });
+  };
 
   if (!permission) {
     // Camera permissions are still loading
@@ -25,19 +53,14 @@ export default function Cam() {
     );
   }
 
-  function toggleCameraType() {
-    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-  }
-  {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-
   return (
     <View style={styles.container}>
-    <Camera
-      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      style={StyleSheet.absoluteFillObject}
-    />
-    {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-  </View>
+      <Camera
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+    </View>
   );
 }
 

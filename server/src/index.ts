@@ -67,7 +67,8 @@ interface User {
 }
 
 app.get('/user', async (req, res) => {
-    //offset & limit
+    console.log("GET /user");
+    
     const offset = req.query.offset ? parseInt(req.query.offset as string) : 0;
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
 
@@ -90,7 +91,8 @@ app.get('/user', async (req, res) => {
     res.send(tempUsers);
 });
 
-app.post('/user/add', async (req, res) => {
+app.post('/user', async (req, res) => {
+    console.log("POST /user");
     const user = req.body as User;
 
     if (!user) {
@@ -108,6 +110,7 @@ app.post('/user/add', async (req, res) => {
 
 
 app.get('*', async (req, res) => {
+    console.log("GET *");
     res.status(404).send({ error: 'not found' });
 });
 
