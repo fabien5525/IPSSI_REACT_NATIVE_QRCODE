@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Image, View, Text, FlatList, Pressable } from 'react-native';
+import { Image, View, Text, FlatList, Pressable,Modal,Button } from 'react-native';
 
 const Api = () => {
   const [userData, setUserData] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     fetch('http://5525.fr:19001/user')
@@ -11,65 +12,8 @@ const Api = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  //   interface User {
-  //     gender: 'male' | 'female',
-  //     name: {
-  //         title: string,
-  //         first: string,
-  //         last: string
-  //     },
-  //     location: {
-  //         street: {
-  //             number: number,
-  //             name: string
-  //         },
-  //         city: string,
-  //         state: string,
-  //         country: string,
-  //         postcode: number,
-  //         coordinates: {
-  //             latitude: string,
-  //             longitude: string
-  //         },
-  //         timezone: {
-  //             offset: string,
-  //             description: string
-  //         },
-  //     },
-  //     email: string,
-  //     login: {
-  //         uuid: string,
-  //         username: string,
-  //         password: string,
-  //         salt: string,
-  //         md5: string,
-  //         sha1: string,
-  //         sha256: string
-  //     },
-  //     dob: {
-  //         date: string,
-  //         age: number
-  //     },
-  //     registered: {
-  //         date: string,
-  //         age: number
-  //     },
-  //     phone: string,
-  //     cell: string,
-  //     id: {
-  //         name: string,
-  //         value: string
-  //     },
-  //     picture: {
-  //         large: string,
-  //         medium: string,
-  //         thumbnail: string
-  //     },
-  //     nat: string
-  // }
-
   const renderProduct = ({ item, index }) => (
-    <Pressable key={index}>
+    <Pressable key={index} onPress={() => setModalVisible(true)}>
       <View
         key={index}
         style={{
@@ -115,6 +59,25 @@ const Api = () => {
             marginRight: 10,
           }}>{item.email}</Text>
         </View>
+
+        <Modal
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            {item && (
+              <View>
+                <Text>Nom: {item.name.first} {item.name.last}</Text>
+                <Text>Email: {item.email}</Text>
+                <Text>Ville: {item.location.city}</Text>
+                <Text>Pays: {item.location.country}</Text>
+                <Button title="Fermer" onPress={() => setModalVisible(false)} />
+              </View>
+            )}
+          </View>
+        </Modal>
+
       </View>
     </Pressable>
   );
