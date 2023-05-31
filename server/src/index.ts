@@ -10,6 +10,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+//if database.json does not exist, create it with an empty array
+if (!readFileSync('database.json', 'utf8')) {
+    writeFileSync('database.json', JSON.stringify([]));
+}
+
 interface User {
     gender: 'male' | 'female',
     name: {
@@ -68,7 +73,7 @@ interface User {
 
 app.get('/user', async (req, res) => {
     console.log("GET /user");
-    
+
     const offset = req.query.offset ? parseInt(req.query.offset as string) : 0;
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
 
