@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet,View, Text, FlatList } from 'react-native';
+import { Image, View, Text, FlatList, Pressable } from 'react-native';
 
 const Api = () => {
   const [userData, setUserData] = useState([]);
@@ -11,24 +11,116 @@ const Api = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  const renderProduct = ({ item , index}) => (
-    <View style={styles2.card}>
-      {item ? (
-        <View key={index}>
-          <Text>Name: {`${item.name.first} ${item.name.last}`}</Text>
-          <Text>Email: {item.email}</Text>
-          <Text>Phone: {item.phone}</Text>
-          <Text>Location: {`${item.location.street.name}, ${item.location.city}`}</Text>
+  //   interface User {
+  //     gender: 'male' | 'female',
+  //     name: {
+  //         title: string,
+  //         first: string,
+  //         last: string
+  //     },
+  //     location: {
+  //         street: {
+  //             number: number,
+  //             name: string
+  //         },
+  //         city: string,
+  //         state: string,
+  //         country: string,
+  //         postcode: number,
+  //         coordinates: {
+  //             latitude: string,
+  //             longitude: string
+  //         },
+  //         timezone: {
+  //             offset: string,
+  //             description: string
+  //         },
+  //     },
+  //     email: string,
+  //     login: {
+  //         uuid: string,
+  //         username: string,
+  //         password: string,
+  //         salt: string,
+  //         md5: string,
+  //         sha1: string,
+  //         sha256: string
+  //     },
+  //     dob: {
+  //         date: string,
+  //         age: number
+  //     },
+  //     registered: {
+  //         date: string,
+  //         age: number
+  //     },
+  //     phone: string,
+  //     cell: string,
+  //     id: {
+  //         name: string,
+  //         value: string
+  //     },
+  //     picture: {
+  //         large: string,
+  //         medium: string,
+  //         thumbnail: string
+  //     },
+  //     nat: string
+  // }
+
+  const renderProduct = ({ item, index }) => (
+    <Pressable key={index}>
+      <View
+        key={index}
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: 10,
+          padding: 10,
+          backgroundColor: "#fff",
+          borderRadius: 10,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 10,
+          elevation: 5,
+        }}
+      >
+        <Image
+          source={{ uri: item.picture.thumbnail }}
+          alt={item.titre}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 50,
+            marginRight: 10,
+          }}
+        />
+        <View style={{
+          flex: 1,
+          height: 50,
+        }}>
+          <Text style={{
+            flex: 1,
+            flexWrap: "wrap",
+            marginRight: 10,
+            textAlign: "left",
+
+          }}>{item.name.first} {item.name.last}</Text>
+          <Text style={{
+            flex: 1,
+            flexWrap: "wrap",
+            marginRight: 10,
+          }}>{item.email}</Text>
         </View>
-      ) : (
-        <Text>Loading...</Text>
-      )}
-    </View>
+      </View>
+    </Pressable>
   );
 
   return (
     <View>
-      <Text>Liste des produits :</Text>
       <FlatList
         data={userData}
         renderItem={renderProduct}
@@ -37,25 +129,5 @@ const Api = () => {
     </View>
   );
 };
-
-const styles2 = StyleSheet.create({
-    card: {
-      backgroundColor: '#F0F0F0',
-      padding: 10,
-      marginEnd:8,
-      marginStart:8,
-      borderRadius: 5,
-      marginBottom: 10,
-    },
-
-    addButton: {
-        backgroundColor: 'blue',
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderRadius: 55,
-        justifyContent: 'center',
-      },
-
-  });
 
 export default Api;

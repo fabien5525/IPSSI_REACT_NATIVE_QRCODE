@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 
 const PORT = 19001;
 
@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 //if database.json does not exist, create it with an empty array
-if (!readFileSync('database.json', 'utf8')) {
+if (!existsSync('database.json')) {
     writeFileSync('database.json', JSON.stringify([]));
 }
 
@@ -39,37 +39,39 @@ interface User {
             offset: string,
             description: string
         },
-        login: {
-            uuid: string,
-            username: string,
-            password: string,
-            salt: string,
-            md5: string,
-            sha1: string,
-            sha256: string
-        },
-        dob: {
-            date: string,
-            age: number
-        },
-        registered: {
-            date: string,
-            age: number
-        },
-        phone: string,
-        cell: string,
-        id: {
-            name: string,
-            value: string
-        },
-        picture: {
-            large: string,
-            medium: string,
-            thumbnail: string
-        },
-        nat: string
-    }
+    },
+    email: string,
+    login: {
+        uuid: string,
+        username: string,
+        password: string,
+        salt: string,
+        md5: string,
+        sha1: string,
+        sha256: string
+    },
+    dob: {
+        date: string,
+        age: number
+    },
+    registered: {
+        date: string,
+        age: number
+    },
+    phone: string,
+    cell: string,
+    id: {
+        name: string,
+        value: string
+    },
+    picture: {
+        large: string,
+        medium: string,
+        thumbnail: string
+    },
+    nat: string
 }
+
 
 app.get('/user', async (req, res) => {
     console.log("GET /user");
@@ -93,7 +95,7 @@ app.get('/user', async (req, res) => {
 
     const tempUsers = await fetch(`https://randomuser.me/api/?results=${limit}&seed=abc&nat=us`).then(res => res.json()).then(res => res.results);
 
-    res.send(tempUsers);
+    res.send(users);
 });
 
 app.post('/user', async (req, res) => {
