@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet,View, Text, Image, FlatList,Button } from 'react-native';
+import { StyleSheet,View, Text, FlatList } from 'react-native';
 
 const Api = () => {
-  const [data, setData] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
+    fetch('http://5525.fr:19001/user')
       .then((response) => response.json())
-      .then((json) => setData(json))
+      .then((json) => setUserData(json))
       .catch((error) => console.error(error));
   }, []);
 
   const renderProduct = ({ item }) => (
-    <View key={item.id} style={styles2.card}>
-      <Text>{item.title}</Text>
-      <Image source={{ uri: item.image }} style={{ width: 200, height: 200 }}resizeMode="contain" />
-      <Button title={item.price.toString()} style={styles2.addButton}/>
+    <View style={styles2.card}>
+      {userData ? (
+        <View>
+          <Text>Name: {`${userData.name.first} ${userData.name.last}`}</Text>
+          <Text>Email: {userData.gender}</Text>
+          <Text>Phone: {userData.phone}</Text>
+          <Text>Location: {`${userData.location.street}, ${userData.location.city}`}</Text>
+        </View>
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </View>
   );
 
@@ -23,7 +30,7 @@ const Api = () => {
     <View>
       <Text>Liste des produits :</Text>
       <FlatList
-        data={data}
+        userData={userData}
         renderItem={renderProduct}
         keyExtractor={(item) => item.id.toString()}
       />
