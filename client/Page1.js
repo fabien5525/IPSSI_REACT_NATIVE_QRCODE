@@ -11,14 +11,14 @@ const Api = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  const renderProduct = ({ item }) => (
+  const renderProduct = ({ item , index}) => (
     <View style={styles2.card}>
-      {userData ? (
-        <View>
-          <Text>Name: {`${userData.name.first} ${userData.name.last}`}</Text>
-          <Text>Email: {userData.gender}</Text>
-          <Text>Phone: {userData.phone}</Text>
-          <Text>Location: {`${userData.location.street}, ${userData.location.city}`}</Text>
+      {item ? (
+        <View key={index}>
+          <Text>Name: {`${item.name.first} ${item.name.last}`}</Text>
+          <Text>Email: {item.email}</Text>
+          <Text>Phone: {item.phone}</Text>
+          <Text>Location: {`${item.location.street.name}, ${item.location.city}`}</Text>
         </View>
       ) : (
         <Text>Loading...</Text>
@@ -30,7 +30,7 @@ const Api = () => {
     <View>
       <Text>Liste des produits :</Text>
       <FlatList
-        userData={userData}
+        data={userData}
         renderItem={renderProduct}
         keyExtractor={(item) => item.id.toString()}
       />
