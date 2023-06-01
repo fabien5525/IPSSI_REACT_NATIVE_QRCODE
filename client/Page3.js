@@ -15,7 +15,6 @@ export default function Cal() {
     if (status === 'granted') {
       const calendars = await Calendar.getCalendarsAsync();
       setCalendars(calendars);
-      console.log("calendar : ", Object.keys(calendars[0]));
     }
   };
 
@@ -38,12 +37,12 @@ export default function Cal() {
     };
     const eventId = await Calendar.createEventAsync(calendar.id, event);
     if (eventId) {
-      Alert.alert('Succès', 'Événement ajouté à l\'agenda !');
+      alert('Succès', 'Événement ajouté à l\'agenda !');
       setTitle('');
       setStartDate('');
       setEndDate('');
     } else {
-      Alert.alert('Erreur');
+      console.error('error add event', eventId);
     }
   };
 
@@ -63,7 +62,7 @@ export default function Cal() {
           <FlatList
             data={calendars}
             renderItem={({ index, item }) => (
-              item.name && <View key={index}>
+              item.name && item.isVisible && <View key={index}>
                 <Pressable onPress={() => setCalendar(item)}>
                   <View
                     style={{

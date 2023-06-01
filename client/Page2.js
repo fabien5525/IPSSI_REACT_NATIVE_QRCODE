@@ -17,7 +17,7 @@ export default function Cam() {
     fetch(data)
       .then((response) => response.json())
       .then((json) => {
-        fetch("http://192.168.194.168:19001/user", {
+        fetch("http://5525.fr:19001/user", {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'

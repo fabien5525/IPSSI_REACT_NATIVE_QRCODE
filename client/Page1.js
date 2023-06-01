@@ -6,7 +6,7 @@ const Api = () => {
   const [itemModal, setItemModal] = useState(null);
 
   useEffect(() => {
-    fetch('http://192.168.194.168:19001/user')
+    fetch('http://5525.fr:19001/user')
       .then((response) => response.json())
       .then((json) => setUserData(json))
       .catch((error) => console.error(error));
@@ -77,15 +77,15 @@ const Api = () => {
           {itemModal && (
             <View>
               <Image
-              source={{ uri: item.picture.thumbnail }}
-              alt={item.email}
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: 50,
-                marginRight: 10,
-              }}
-            />
+                source={{ uri: itemModal.picture.thumbnail }}
+                alt={itemModal.email}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50,
+                  marginRight: 10,
+                }}
+              />
               <Text>Nom: {itemModal.name.first} {itemModal.name.last}</Text>
               <Text>Email: {itemModal.email}</Text>
               <Text>Ville: {itemModal.location.city}</Text>
