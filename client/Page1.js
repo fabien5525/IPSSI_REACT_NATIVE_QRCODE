@@ -12,56 +12,59 @@ const Api = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  const renderProduct = ({ index, item }) => (
-    <Pressable key={index.toString()} onPress={() => setItemModal(item)}>
-      <View
-        key={index}
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          margin: 10,
-          padding: 10,
-          backgroundColor: "#fff",
-          borderRadius: 10,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.25,
-          shadowRadius: 10,
-          elevation: 5,
-        }}
-      >
-        <Image
-          source={{ uri: item.picture.thumbnail }}
-          alt={item.email}
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 50,
-            marginRight: 10,
-          }}
-        />
-        <View style={{
-          flex: 1,
-          height: 50,
-        }}>
-          <Text style={{
-            flex: 1,
-            flexWrap: "wrap",
-            marginRight: 10,
-            textAlign: "left",
+  const renderProduct = ({ index, item }) => {
+    return (
+      <View key={index}>
+        <Pressable onPress={() => setItemModal(item)}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: 10,
+              padding: 10,
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 10,
+              elevation: 5,
+            }}
+          >
+            <Image
+              source={{ uri: item.picture.thumbnail }}
+              alt={item.email}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 50,
+                marginRight: 10,
+              }}
+            />
+            <View style={{
+              flex: 1,
+              height: 50,
+            }}>
+              <Text style={{
+                flex: 1,
+                flexWrap: "wrap",
+                marginRight: 10,
+                textAlign: "left",
 
-          }}>{item.name.first} {item.name.last}</Text>
-          <Text style={{
-            flex: 1,
-            flexWrap: "wrap",
-            marginRight: 10,
-          }}>{item.email}</Text>
-        </View>
+              }}>{item.name.first} {item.name.last}</Text>
+              <Text style={{
+                flex: 1,
+                flexWrap: "wrap",
+                marginRight: 10,
+              }}>{item.email}</Text>
+            </View>
+          </View>
+        </Pressable>
       </View>
-    </Pressable>
-  );
+    )
+  };
 
   return (
     <View>
@@ -85,7 +88,6 @@ const Api = () => {
       <FlatList
         data={userData}
         renderItem={renderProduct}
-        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );
