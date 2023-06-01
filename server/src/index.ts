@@ -93,8 +93,6 @@ app.get('/user', async (req, res) => {
     const database = readFileSync('database.json', 'utf8');
     const users: User[] = JSON.parse(database);
 
-    const tempUsers = await fetch(`https://randomuser.me/api/?results=${limit}&seed=abc&nat=us`).then(res => res.json()).then(res => res.results);
-
     res.send(users);
 });
 

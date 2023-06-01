@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Image, View, Text, FlatList, Pressable,Modal,Button } from 'react-native';
+import { Image, View, Text, FlatList, Pressable, Modal, Button } from 'react-native';
 
 const Api = () => {
   const [userData, setUserData] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [itemModal, setItemModal] = useState(null);
 
   useEffect(() => {
-    fetch('http://5525.fr:19001/user')
+    fetch('http://192.168.194.168:19001/user')
       .then((response) => response.json())
       .then((json) => setUserData(json))
       .catch((error) => console.error(error));
   }, []);
 
-  const renderProduct = ({ item, index }) => (
-    <Pressable key={index} onPress={() => setModalVisible(true)}>
+  const renderProduct = ({ index, item }) => (
+    <Pressable key={index.toString()} onPress={() => setItemModal(item)}>
       <View
         key={index}
         style={{
@@ -34,7 +34,7 @@ const Api = () => {
       >
         <Image
           source={{ uri: item.picture.thumbnail }}
-          alt={item.titre}
+          alt={item.email}
           style={{
             width: 50,
             height: 50,
@@ -59,31 +59,29 @@ const Api = () => {
             marginRight: 10,
           }}>{item.email}</Text>
         </View>
-
-        <Modal
-        visible={modalVisible}
-        animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            {item && (
-              <View>
-                <Text>Nom: {item.name.first} {item.name.last}</Text>
-                <Text>Email: {item.email}</Text>
-                <Text>Ville: {item.location.city}</Text>
-                <Text>Pays: {item.location.country}</Text>
-                <Button title="Fermer" onPress={() => setModalVisible(false)} />
-              </View>
-            )}
-          </View>
-        </Modal>
-
       </View>
     </Pressable>
   );
 
   return (
     <View>
+      <Modal
+        visible={itemModal ? true : false}
+        animationType="slide"
+        onRequestClose={() => setItemModal(null)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          {itemModal && (
+            <View>
+              <Text>Nom: {itemModal.name.first} {itemModal.name.last}</Text>
+              <Text>Email: {itemModal.email}</Text>
+              <Text>Ville: {itemModal.location.city}</Text>
+              <Text>Pays: {itemModal.location.country}</Text>
+              <Button title="Fermer" onPress={() => setItemModal(null)} />
+            </View>
+          )}
+        </View>
+      </Modal>
       <FlatList
         data={userData}
         renderItem={renderProduct}
