@@ -75,7 +75,12 @@ const Api = () => {
       >
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {itemModal && (
-            <View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <Image
                 source={{ uri: itemModal.picture.thumbnail }}
                 alt={itemModal.email}
