@@ -76,6 +76,16 @@ const Api = () => {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {itemModal && (
             <View>
+              <Image
+              source={{ uri: item.picture.thumbnail }}
+              alt={item.email}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 50,
+                marginRight: 10,
+              }}
+            />
               <Text>Nom: {itemModal.name.first} {itemModal.name.last}</Text>
               <Text>Email: {itemModal.email}</Text>
               <Text>Ville: {itemModal.location.city}</Text>
